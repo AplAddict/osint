@@ -1,24 +1,121 @@
 <html>
-	<head>
-		<meta content="width=device-width,initial-scale=1" name="viewport" />
-		<style>
-			body {text-align:center}
-			input {display:block;margin:50px auto;font-size:24px;}
-			@media (prefers-color-scheme: dark) {body{background-color:#303131} #n{background-color:#4C4C49;color:#BBB7B0}}
-		</style>
-	</head>
-	<body>
-		<input id="n" />
-		<input onclick="x(this)" value="Whatsapp" type="button" />
-		<input onclick="x(this)" value="SMS" type="button" />
-		<input onclick="x(this)" value="Truecall" type="button" />
-		<input onclick="x(this)" value="Google" type="button" />
-		<script>
-			function x(a){
-				e = 62, //Indonesia country code
-				a=a.value,b='https://',c=document.getElementById('n').value.replace(/[^0-9]/g,'');
-				e+"0"==c.substr(0,3)?c=c.substr(3,20):e==c.substr(0,2)?c=c.substr(2,20):"0"==c.substr(0,1)&&(c=c.substr(1,20));
-				d={'Whatsapp':'api.whatsapp.com/send/?phone='+e,'Truecall':'truecaller.com/search/id/','Google':'google.com/search?q=0'};
-				if(c.length>3) document.location = (a=='SMS'?a+'://':b+d[a])+c;
+
+<head>
+	<meta charset="utf-8">
+	<title>OSINT Phone Number Lookup</title>
+	<meta content="width=device-width,initial-scale=1" name="viewport" />
+	<link rel="stylesheet" href="build/css/intlTelInput.css">
+	<link rel="stylesheet" href="build/css/demo.css">
+	<style>
+		body {
+			text-align: center
+		}
+
+		input {
+			display: block;
+			margin: 50px auto;
+			font-size: 24px;
+		}
+
+		#e {
+			width: 30px;
+			position: absolute;
+			margin-top: 0px;
+			left: 0;
+			right: 5;
+		}
+
+		#n {
+			left: 5;
+			right: 0;
+		}
+
+		.row {
+			position: relative;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			body {
+				background-color: #303131
 			}
-		</script>
+
+			#e,
+			#n {
+				background-color: #4C4C49;
+				color: #BBB7B0
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<input id="phone" name="phone" type="tel">
+	<div class="row">
+	</div>
+
+	<input onclick="x(this)" value="Whatsapp" type="button" />
+	<input onclick="x(this)" value="SMS" type="button" />
+	<input onclick="x(this)" value="Truecall" type="button" />
+	<input onclick="x(this)" value="Google" type="button" />
+	<input onclick="x(this)" value="Facebook" type="button" />
+
+	<script src="build/js/intlTelInput.js"></script>
+	<script>
+		var input = document.querySelector("#phone");
+		window.intlTelInput(input, {
+			utilsScript: "build/js/utils.js",
+		});
+		var iti = intlTelInput(input);
+		function type() {
+			switch (iti.getNumberType()) {
+				case 0:
+					return "fixed line";
+					break;
+				case 1:
+					return "mobile";
+					break;
+				case 2:
+					return "fixed line or mobile";
+					break;
+				case 3:
+					return "toll free";
+					break;
+				case 4:
+					return "Premium Rate";
+					break;
+				case 5:
+					return "Shared Cost";
+					break;
+				case 6:
+					return "VOIP";
+					break;
+				case 7:
+					return "Personal Number";
+					break;
+				case 8:
+					return "Pager";
+					break;
+				case 9:
+					return "UAN";
+					break;
+				case 10:
+					return "voicemail";
+					break;
+				case -1:
+					return "Unknown";
+					break;
+			}
+		}
+		function x(a) {
+			e = iti.getSelectedCountryData().dialCode, // Country code
+				a = a.value, b = 'https://', c = iti.getNumber().replace(iti.getSelectedCountryData().dialCode, "").replace("+", "").replace(/[^0-9]/g, '');
+			e + "0" == c.substr(0, 3) ? c = c.substr(3, 20) : e == c.substr(0, 2) ? c = c.substr(2, 20) : "0" == c.substr(0, 1) && (c = c.substr(1, 20));
+			d = { 'Whatsapp': 'api.whatsapp.com/send/?phone=' + e, 'Truecall': 'truecaller.com/search/id/', 'Google': 'google.com/search?q=0', "Facebook": "m.facebook.com/login/device-based/ar/login/?ldata=AWefUf4IpsU7L5xsX9EWWp1EJY8GCIZN0hYUAWgGjX02v0qmCAnDaOPqVpjMM2eLPZ43ArcexMFU7ookFXgqB6MFkDRJsqF5r0lwGDktDNKHJkLDS7G9Ge4o-CrO7raD1piXcg1m3ib_P2qJBxIR8SeUHpBCYOCbi_VzMcdIboXLnWNicl0mOyEJPiCOzodhRS0GBrkmXNxeqL8WHn-yyoUCPwyhDVHoN__6m8xWH71mgS2CArXv3SAly7xS1zIe5g4eugIbplJJyf1XZZV8V-jw&multiple_results=0&ars=m_account_switcher&scp=1&pls=" };
+			if (c.length > 3) if (iti.isValidNumber()) {
+				alert(iti.getNumber() + " is a " + type() + "number. To continue to " + (a == 'SMS' ? a + '://' : b + d[a]) + c + " tap \"Close\".");
+				document.location = (a == 'SMS' ? a + '://' : b + d[a]) + c;
+			} else {
+				alert("Please enter a valid number and make sure to select the correct country code.")
+			}
+		}
+	</script>
