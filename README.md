@@ -1,4 +1,4 @@
-![osint](https://raw.githubusercontent.com/hyanc/osint/master/preview.png)
+![osint](https://raw.githubusercontent.com/AplAddict/osint/master/preview.png)
 # Features
 - Currently check any countries phone numbers
 - Responsive page for mobile screen
