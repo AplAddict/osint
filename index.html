@@ -45,10 +45,81 @@
 				color: #BBB7B0
 			}
 		}
+
+		.fa {
+			font-size: 20px;
+			width: 25px;
+			text-align: center;
+			text-decoration: none;
+			margin: 5px 2px;
+			color: white;
+		}
+
+		.sidenav {
+			height: 100%;
+			width: 0;
+			position: fixed;
+			z-index: 1;
+			top: 0;
+			left: 0;
+			background-color: #111;
+			overflow-x: hidden;
+			transition: 0.5s;
+			padding-top: 60px;
+			text-align: left;
+		}
+
+		.sidenav a {
+			padding: 8px 8px 8px 32px;
+			text-decoration: none;
+			font-size: 25px;
+			color: #818181;
+			display: block;
+			transition: 0.3s;
+		}
+
+		.sidenav a:hover {
+			color: #f1f1f1;
+		}
+
+		.menubut:hover {
+			color: #818181 !important;
+			transition: 0.3s;
+		}
+
+		.sidenav .closebtn {
+			position: absolute;
+			top: 0;
+			right: 25px;
+			font-size: 36px;
+			margin-left: 50px;
+		}
+
+		#main {
+			transition: margin-left .5s;
+		}
 	</style>
 </head>
 
-<body>
+<div id="mySidenav" class="sidenav">
+	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	<a href="/index.html">Home</a>
+	<a href="/widgets">Xen HTML iOS Widgets</a>
+	<a href="https://github.com/AplAddict/Arduino-Pentesting-Tool">Arduino Pentesting tool</a>
+	<a href="https://www.icja.org/student-life/investment-club/">ICJA Investment Club</a>
+	<a href="/STEAM">Bluetooth Lego Car</a>
+	<a href="/ICJACal.mobileconfig">ICJA iOS Cal</a>
+	<a onclick="alert('coming soon...');">Custom Designs</a>
+	<a href="http://crashios.com/share">crashios.com</a>
+	<img draggable="false" style="width:100%;" src="zip.png">
+</div>
+
+<body id="main">
+	<span class="menubut" style="font-size:30px;cursor:pointer;color:white;margin-top:15px; margin-left:15px;float:left"
+		onclick="openNav()">&#9776;</span>
+	<br><br><br><br><br><br>
+	<h3>OSINT Phone Number Lookup</h3>
+
 	<input id="phone" name="phone" type="tel">
 	<div class="row">
 	</div>
@@ -118,5 +189,15 @@
 			} else {
 				alert("Please enter a valid number and make sure to select the correct country code.")
 			}
+		}
+		function openNav() {
+			document.getElementById("mySidenav").style.width = "250px";
+			document.getElementById("main").style.marginLeft = "250px";
+			document.getElementsByClassName("menubut")[0].style.color = "#818181";
+		}
+		function closeNav() {
+			document.getElementById("mySidenav").style.width = "0";
+			document.getElementById("main").style.marginLeft = "0";
+			document.getElementsByClassName("menubut")[0].style.color = "white";
 		}
 	</script>
